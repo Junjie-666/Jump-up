@@ -77,7 +77,7 @@ world_stage  = -1  # 0=DAY,1=DUSK,2=NIGHT
 current_anim_frame = 0
 ```
 ### 2) Player Sprite, Ground Line & Setup
-# Player art (use your full ASCII art here)
+# Player art
 ```
 runner_frame_a = img("""...""")
 runner_frame_b = img("""...""")
@@ -262,8 +262,60 @@ def handle_collision(player, enemy):
 
 sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, handle_collision)
 ```
+### 13) Start / Reset Run
+```
+def start_new_run():
+    global game_running, world_stage
 
+    info.set_score(0)
+    runner.bottom = GROUND_Y
+    runner.x = 28
+    runner.vx = 0
+    runner.vy = 0
+    runner.ay = GRAVITY
+    runner.set_flag(SpriteFlag.INVISIBLE, False)
+    runner.set_stay_in_screen(True)
 
+    for e in sprites.all_of_kind(SpriteKind.enemy):
+        e.destroy()
+    for c in sprites.all_of_kind(CoinKind):
+        c.destroy()
+
+    world_stage = -1
+    scene.set_background_image(assets.image("bg_day"))  # or your DAY img(...)
+    game_running = 1
+```
+### 14) Help / Splash (controls hint)
+```
+game.splash(
+    "ROBOT RUNNER",
+    "A = Jump\nAvoid blocks\nDodge drones at NIGHT\nCollect coins!"
+)
+```
+### 15) Kick Off First Run
+```
+start_new_run()
+```
+### 16) Game Loop Scheduling (timers)
+```
+game.on_update_interval(500, add_score)
+game.on_update_interval(1200, spawn_enemy)
+game.on_update_interval(1000, spawn_flying_drone)
+game.on_update_interval(800, retune_speed)
+game.on_update_interval(1500, spawn_coin)
+game.on_update_interval(500, spawn_decor)
+game.on_update_interval(100, animate_runner)
+game.on_update_interval(500, update_world_theme_with_notice)
+```
+### 17) Built-in Sound References
+```
+# Jump cue
+music.ba_ding
+# Coin pickup cue
+music.power_up
+# Game over cue
+music.wawawawaa
+```
 
 ## Project Status
 All essential gameplay features have been implemented: - Core loop of jumping/running - Obstacles - Coins - Drones in dusk/night levels - Scoring and high score system - Animations - Sound effects - Backgrounds.

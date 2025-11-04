@@ -91,7 +91,7 @@ runner.bottom = GROUND_Y
 runner.ay = GRAVITY
 runner.set_stay_in_screen(True)
 ```
-# Ground guide line (ghost so it doesn't collide)
+# Ground guideline (ghosted so it doesn't collide).
 ```
 line = sprites.create(image.create(160, 2), SpriteKind.projectile)
 line.image.fill(5)
@@ -99,7 +99,7 @@ line.left = 0
 line.y = GROUND_Y + 1
 line.set_flag(SpriteFlag.GHOST, True)
 ```
-### 3) Clamp-To-Ground (no sinking below floor)
+### 3) Clamp-to-ground (does not sink below the floor).
 ```
 def clamp_to_ground():
     if runner.bottom > GROUND_Y:
@@ -118,7 +118,7 @@ def on_a_pressed():
 
 controller.A.on_event(ControllerButtonEvent.PRESSED, on_a_pressed)
 ```
-### 5) Score & Difficulty Scaling
+### 5) Score and difficulty scaling
 ```def add_score():
     if game_running == 1:
         info.change_score_by(1)
@@ -138,7 +138,7 @@ def retune_speed():
 
 
 
-### 6) Ground Enemy Spawner (blocks)
+### 6) Ground Enemy Spawner
 ```
 def spawn_enemy():
     if game_running == 1:
@@ -180,7 +180,7 @@ def on_get_coin(player, coin):
 
 sprites.on_overlap(SpriteKind.player, CoinKind, on_get_coin)
 ```
-### 9) Background Decor (parallax)
+### 9) Background Decor
 ```
 def spawn_decor():
     if game_running == 1 and randint(0, 100) < 50:
@@ -192,7 +192,7 @@ def spawn_decor():
         decor.lifespan = 8000
 ```
 
-### 10) Runner Animation (run vs jump)
+### 10) Runner Animation (run and jump)
 ```
 def animate_runner():
     global current_anim_frame
@@ -235,7 +235,7 @@ def update_world_theme_with_notice():
         scene.set_background_image(img("""...day background..."""))
         effects.clouds.start_screen_effect()
 ```
-### 12) Enemy Collision → Game Over & Prompt
+### 12) Enemy Collision → Game Over
 ```
 def handle_collision(player, enemy):
     global high_score, game_running
@@ -307,15 +307,6 @@ game.on_update_interval(1500, spawn_coin)
 game.on_update_interval(500, spawn_decor)
 game.on_update_interval(100, animate_runner)
 game.on_update_interval(500, update_world_theme_with_notice)
-```
-### 17) Built-in Sound References
-```
-# Jump cue
-music.ba_ding
-# Coin pickup cue
-music.power_up
-# Game over cue
-music.wawawawaa
 ```
 
 ## Project Status
